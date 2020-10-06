@@ -1,30 +1,30 @@
 <?php
 session_start();
 
-// Conexão com Banco de Dados 
-$bancodedados = mysqli_connect('152.249.142.8:3306', 'Pedro', 'Pedrohenrique#10', 'etec');
+// ConexÃ£o com Banco de Dados 
+$bancodedados = mysqli_connect('localhost:3306', 'Pedro', 'Pedrohenrique#10', 'etec');
 	// Mensagem de erro com banco de dados
 	if (!$bancodedados) {
 		printf("Can't connect to localhost. Error: %s\n", mysqli_connect_error());
 	}
 
 
-// Declaração das variaveis
+// DeclaraÃ§Ã£o das variaveis
 $usuario ="";
 $email = "";
 $erro = array();
 
-// Chamando register() função, Se register_btn é usado
-if (isset($_POST´['register_btn'])) {
+// Chamando register() funÃ§Ã£o, Se register_btn Ã© usado
+if (isset($_POSTÂ´['register_btn'])) {
 	register();
 }
 
 // Registro do usuario 
 function registro(){
-	 // chama as variaveis com global key disponiveis na função
+	 // chama as variaveis com global key disponiveis na funÃ§Ã£o
 	 global $bancodedados, $erro, $usuario, $email;
 
-	 // Recebe todos os valores de imput do formulario de registro, e chama a função e()
+	 // Recebe todos os valores de imput do formulario de registro, e chama a funÃ§Ã£o e()
 
 	 $usuario = e($_POST['usuario']);
 	 $email   = e($_POST['email']);
@@ -33,44 +33,44 @@ function registro(){
 	 $senha_1 = e($_POST['senha_1']);
 	 $senha_2 = e($_POST['senha_2']);
 
-	 // Validação de formulário: Prosseguirá se o formulário estiver correto
+	 // ValidaÃ§Ã£o de formulÃ¡rio: ProsseguirÃ¡ se o formulÃ¡rio estiver correto
 	 if (empty($usuario)) {
-		  array_push($erro, "Usuário é necessário");
+		  array_push($erro, "UsuÃ¡rio Ã© necessÃ¡rio");
 	 }
 	 if (empty($email)) {
-		  array_push($erro, "Email é necessário");
+		  array_push($erro, "Email Ã© necessÃ¡rio");
 	 }
 	 if (empty($nomecom)) {
-		  array_push($erro, "Nome completo é necessário");
+		  array_push($erro, "Nome completo Ã© necessÃ¡rio");
 	 }
 	 if (empty($senha_1)) {
-		  array_push($erro, "Senha é necessária");
+		  array_push($erro, "Senha Ã© necessÃ¡ria");
 	 }
 	 if ($senha_1 != $senha_2) {
-		  array_push($erro, "As duas senhas não coincidem");
+		  array_push($erro, "As duas senhas nÃ£o coincidem");
 	 }
 	 
-	 // Registro de usuario se não há erros no formulário
+	 // Registro de usuario se nÃ£o hÃ¡ erros no formulÃ¡rio
 	 if (count($errors) ==0) {
-		  $senha = md5($senha_1); //Criptografar a senha MD5 após registro
+		  $senha = md5($senha_1); //Criptografar a senha MD5 apÃ³s registro
 
 		  if (isset($_POST['tipo_usuario'])) {
 				$tipo_usuario = e($_POST['tipo_usuario']);
 				$query = "INSERT INTO usuarios (usuario, email, nomecom, tipo_usuario, senha)
 					VALUES('$usuario', '$email', '$nomecom''$tipo_usuario', '$senha')";
 			mysqli_query($bancodedados, $query);
-			$_SESSION['sucesso'] ="Novo usuário foi criado com sucesso!!";
+			$_SESSION['sucesso'] ="Novo usuÃ¡rio foi criado com sucesso!!";
 			header('location: home.php');
 		  }else{
 				$query ="INSERT INTO usuarios (usuario, email, nomecom, tipo_usuario, senha)
 						VALUES('$usuario', '$email', 'user', '$senha')";
 				mysqli_query($bancodedados, $query);
 
-				// Pegar id da criação de usuário
+				// Pegar id da criaÃ§Ã£o de usuÃ¡rio
 				$logado_no_id_usuario = mysqli_insert_id($bancodedados);
 
-				$_SESSION['user'] = getUserById($logado_no_id_usuario); // coloca você logado na sessão
-				$_SESSION['sucesso'] = "Você agora está logado!";
+				$_SESSION['user'] = getUserById($logado_no_id_usuario); // coloca vocÃª logado na sessÃ£o
+				$_SESSION['sucesso'] = "VocÃª agora estÃ¡ logado!";
 				header('location: entrar.php');
 		  }
 	 }	 
@@ -113,7 +113,7 @@ function registro(){
 		}
   }
 
-   // Chama a função login() se register_btn foi usado
+   // Chama a funÃ§Ã£o login() se register_btn foi usado
    if (isset($_POST['login_btn'])) {
 		  login();
    }
@@ -122,16 +122,16 @@ function registro(){
    function login(){
 		  global $bancodedados, $usuario, $erro;
 
-		  // GET de formulário
+		  // GET de formulÃ¡rio
 		  $usuario = e($_POST['usuario']);
 		  $senha = e($_POST['senha']);
 
 		  // Erro de estiver vazio
 		  if (empty($usuario)) {
-				array_push($erro, "Usuario é necessário");
+				array_push($erro, "Usuario Ã© necessÃ¡rio");
 		  }
 		  if (empty($senha)) {
-				array_push($erro, "Senha é necessária");
+				array_push($erro, "Senha Ã© necessÃ¡ria");
 		  }
 		  // Atentar qual o privilegio do usuario
 		  if (count($erro) == 0)  {
@@ -141,16 +141,16 @@ function registro(){
 				$results = mysqli_query($bancodedados, $query);
 
 				if (mysqli_num_rows($results) == 1) { //Usuario encontrado 
-					// Checar se é usuario ou administrador
+					// Checar se Ã© usuario ou administrador
 					$logado_no_id_usuario = mysqli_fetch_assoc($results);
 					if ($logado_no_id_usuario['tipo_usuario'] == 'administrador') {
 
 						$_SESSION['user'] = $logado_no_id_usuario;
-						$_SESSION['sucesso'] = "Você está logado comno administrador";
+						$_SESSION['sucesso'] = "VocÃª estÃ¡ logado comno administrador";
 						header('location: administracao.php');
 					}else{
 						$_SESSION['user'] = $logado_no_id_usuario;
-						$_SESSION['sucesso'] = "Você está logado !";
+						$_SESSION['sucesso'] = "VocÃª estÃ¡ logado !";
 					
 						header('location: logado.php');
 					}	
