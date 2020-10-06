@@ -18,12 +18,12 @@
 		<h2>Admin - create user</h2>
 	</div>
 	
-	<form method="POST" action="registro.php">
+	<form method="post" action="registro.php">
 
 		<?php echo display_error(); ?>
 
 		<div class="input-group">
-			<label>Usuario</label>
+			<label>Username</label>
 			<input type="text" name="usuario" value="<?php echo $usuario; ?>">
 		</div>
 		<div class="input-group">
@@ -31,15 +31,19 @@
 			<input type="email" name="email" value="<?php echo $email; ?>">
 		</div>
 		<div class="input-group">
-			<label>user ou administrador?</label>
-			<input type="text" name="tipo_usuario" value="">
+			<label>User type</label>
+			<select name="tipo_usuario" id="user_type" >
+				<option value=""></option>
+				<option value="administrador">Admin</option>
+				<option value="userr">User</option>
+			</select>
 		</div>
 		<div class="input-group">
-			<label>Senha</label>
+			<label>Password</label>
 			<input type="password" name="senha_1">
 		</div>
 		<div class="input-group">
-			<label>Confirme a senha</label>
+			<label>Confirm password</label>
 			<input type="password" name="senha_2">
 		</div>
 		<div class="input-group">
